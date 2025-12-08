@@ -1,0 +1,18 @@
+{
+  "name": "turnip-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.13.1",
+  "dependencies": {
+    "culori": "^4.0.2",
+    "discord.js": "^14.25.1",
+    "undici-types": "^7.16.0"
+  }
+}
