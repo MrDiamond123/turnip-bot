@@ -13,22 +13,33 @@ module.exports = {
         let roles = await guild.roles.fetch();
         let colorRoles = roles.filter(role => role.name.trim().toLowerCase().includes("color-"))
 
-        const color = formatHex(interaction.options.getString("color"))
-        if (!color) {
-            return await interaction.reply("That ain't a color chief")
+        let yuriMode;
+        let yuriFetch;
+        let yuri;
+
+        let color;
+        if (interaction.options.getString("color") == "yuri") {
+            interaction.reply("yuri mode temp disabled my bad")
+            return;
+        } else {
+            color = formatHex(interaction.options.getString("color"))
+            if (!color) {
+                return await interaction.reply("That ain't a color chief")
+            }
         }
+        
         const role = colorRoles.filter(role => role.name.trim().toLowerCase() == (`Color-${color}`).trim().toLowerCase()).first() || await guild.roles.create({ name: `Color-${color}`, colors: { primaryColor: color }, mentionable: false });
-
-        const yuriFetch = await fetch(`https://api.nekosapi.com/v4/images/random?rating=safe&tags=yuri&limit=1`, { method: 'GET' })
-        const yuri = await yuriFetch.json()
-
-        console.log(yuri)
 
         const embed = new EmbedBuilder()
             .setColor(color)
             .setTitle(`Your color was set to ${color}`)
             .setDescription("You have successfully set your color! If anyone also wants that color, they can yoink it!")
-            // .setImage(yuri)
+        
+        if (yuriMode) {
+            embed.setImage(yuri.url)
+            embed.setDescription("owo")
+        }
+        
         const yoinkButton = new ButtonBuilder().setCustomId('yoink').setLabel("Yoink").setStyle(ButtonStyle.Primary)
         const row = new ActionRowBuilder().addComponents(yoinkButton)
 
