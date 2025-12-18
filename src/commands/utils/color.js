@@ -20,13 +20,15 @@ module.exports = {
         const role = colorRoles.filter(role => role.name.trim().toLowerCase() == (`Color-${color}`).trim().toLowerCase()).first() || await guild.roles.create({ name: `Color-${color}`, colors: { primaryColor: color }, mentionable: false });
 
         const yuriFetch = await fetch(`https://api.nekosapi.com/v4/images/random?rating=safe&tags=yuri&limit=1`, { method: 'GET' })
-        const yuri = yuriFetch.json()[0].url
+        const yuri = await yuriFetch.json()
+
+        console.log(yuri)
 
         const embed = new EmbedBuilder()
             .setColor(color)
             .setTitle(`Your color was set to ${color}`)
             .setDescription("You have successfully set your color! If anyone also wants that color, they can yoink it!")
-            .setImage(yuri)
+            // .setImage(yuri)
         const yoinkButton = new ButtonBuilder().setCustomId('yoink').setLabel("Yoink").setStyle(ButtonStyle.Primary)
         const row = new ActionRowBuilder().addComponents(yoinkButton)
 
