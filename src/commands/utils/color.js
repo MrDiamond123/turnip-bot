@@ -19,11 +19,14 @@ module.exports = {
         }
         const role = colorRoles.filter(role => role.name.trim().toLowerCase() == (`Color-${color}`).trim().toLowerCase()).first() || await guild.roles.create({ name: `Color-${color}`, colors: { primaryColor: color }, mentionable: false });
 
+        const yuriFetch = await fetch(`https://api.nekosapi.com/v4/images/random?rating=safe&tags=yuri&limit=1`, { method: 'GET' })
+        const yuri = yuriFetch.json()[0].url
+
         const embed = new EmbedBuilder()
             .setColor(color)
             .setTitle(`Your color was set to ${color}`)
             .setDescription("You have successfully set your color! If anyone also wants that color, they can yoink it!")
-
+            .setImage(yuri)
         const yoinkButton = new ButtonBuilder().setCustomId('yoink').setLabel("Yoink").setStyle(ButtonStyle.Primary)
         const row = new ActionRowBuilder().addComponents(yoinkButton)
 
@@ -35,6 +38,7 @@ module.exports = {
             console.log(guild.id, "color role pruning event triggered, removing all unused color roles for this guild")
             await guild.members.fetch();
             const unusedRoles = colorRoles.filter(role => role.members.size === 0)
+            
             unusedRoles.each(role => {
                 console.debug(guild.id, "unused roles:", role.name, role.members.count)
                 role.delete();
